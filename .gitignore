@@ -51,6 +51,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
+
 # Translations
 *.mo
 *.pot
@@ -70,6 +71,15 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+
+# Vosk Model
+model/
+
+# Coqui
+coqui-data
+
+# API-Keys
+keys.py
 
 # PyBuilder
 target/
@@ -109,6 +119,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+# TUDA
+TUDA-testdateien/
 
 # Spyder project settings
 .spyderproject
