@@ -18,7 +18,7 @@ xSR=0
 def useSR(speechRecognition, audio):
     print(speechRecognition)
     if speechRecognition=="sphinx":
-        recogniced=vosk(audio)
+        recogniced=sphinx(audio)
     elif speechRecognition=="coqui":
         recogniced=coqui(audio)
     elif speechRecognition=="google":
@@ -32,18 +32,20 @@ def useSR(speechRecognition, audio):
     elif speechRecognition=="wit":
         recogniced=wit(audio)
     return recogniced
-   
+
+# listen to microphone, if the user is not happy with the input repeat listening
 def listen(speechEngine, sentence):
     input='Mir ist ein Fehler passiert, bitte wiederholen'
     while input == 'Mir ist ein Fehler passiert, bitte wiederholen':
         webout.put_markdown("# "+sentence)
-        audio=listenAudio(microphoneIndex=2)
+        audio=listenAudio(microphoneIndex=3)
         recogniced=useSR(speechEngine,audio)
         webout.put_markdown("# "+recogniced)
         input=webin.radio("Wie gut findest du die Ausgabe der Spracherkennung: ", options=['Sehr gut', 'Gut', 'Mittelmäßig', 'Schlecht', 'Grausam','Mir ist ein Fehler passiert, bitte wiederholen'])
         webout.clear()
     return (audio, input)
 
+# suffle between the speech recognition engines
 def randomizeSR(index):
     indexrest=divmod(index,len(srImplemented))[1]
     if indexrest==0:
@@ -52,30 +54,29 @@ def randomizeSR(index):
 
 # read csv sentences
 data = pd.read_csv(sentencesFile, sep=";")
-
 #converting column data to list
 sorter=data['#'].tolist()
 sentence=data['sentence'].tolist()
-
+#randomize the order of the sentences that are shown to the user
 random.shuffle(sorter)
 print(sorter)
 # Uncomment to find microphone that should be used
 for index, name in enumerate(sr.Microphone.list_microphone_names()):
     print("Microphone with name \"{1}\" found for `Microphone(device_index={0})`".format(index, name))
-
+# Ask data about the user 
 info = webin.input_group("Daten über dich",[
   webin.select('Alter',options=['11-20','21-30', '31-40','41-50','51-60','61-70', '71-80','81-90','91-100'], name='age'),
   webin.select("Geschlecht", options=['Weiblich', 'Männlich', 'Divers'], name='gender'),
   webin.input("Aus welchen Bundesland kommst Du?",name='bundesland'),
   webin.select("Ist Deutsch deine Muttersprache?",options=['Ja', 'Nein'],name='muttersprache')
 ])
-
+# for each sentence use a randomized speech engine
 for i in sorter:
     speechEngine=randomizeSR(xSR)
     res=listen(speechEngine,sentence[i])
     print(res[1])
     xSR=xSR+1
-
+# say thank you at the end
 webout.put_markdown('# Vielen Dank!')
 webout.put_image('https://c.tenor.com/CwQVw9XUhwwAAAAC/smooch-blow-kiss.gif')  # internet image 
 
