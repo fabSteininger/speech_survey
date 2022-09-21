@@ -4,6 +4,8 @@ import csv
 import os
 from recognition import *
 from datetime import date
+import traceback
+
 
 #Folders with data, define for use case
 textFilesFolder = os.path.join('TUDA-testdateien','JSON')
@@ -45,7 +47,9 @@ def uniquify(path):
 for x in speechFiles:
     try:
         audio_read=readAudio(os.path.join(speechFilesFolder,x))
-    except:
+    except Exception:
+        traceback.print_exc()
+        print("can't read this file: "+ x )
         continue
     text_read=readText(os.path.join(textFilesFolder,x.split('_')[0]+textExtension))
     if(text_read!=None):
