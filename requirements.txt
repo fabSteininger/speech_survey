@@ -46,7 +46,7 @@ s3transfer==0.6.0
 six==1.16.0
 sounddevice==0.4.6
 soundfile==0.12.1
-SpeechRecognition==3.10.0
+SpeechRecognition @ git+https://github.com/fabSteininger/speech_recognition.git
 srt==3.5.3
 sympy==1.11.1
 tiktoken==0.3.1
