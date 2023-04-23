@@ -9,7 +9,7 @@ import traceback
 
 #Folders with data, define for use case
 textFilesFolder = os.path.join('TUDA-testdateien','JSON')
-speechFilesFolder =os.path.join('TUDA-testdateien','Samson')
+speechFilesFolder =os.path.join('TUDA-testdateien','Test')
 resultsFolder =os.path.join('TUDA-testdateien','Results')
 audioExtension=".wav"
 textExtension=".json"
@@ -53,7 +53,9 @@ for x in speechFiles:
         continue
     text_read=readText(os.path.join(textFilesFolder,x.split('_')[0]+textExtension))
     if(text_read!=None):
-        speechRecognition=vosk(audio_read)
+        #------------------------------------------------------------------
+        # Speech Engine change here
+        speechRecognition=wit(audio_read)
         wer=evaluation(text_read[0],speechRecognition)
         results.append(wer+text_read[1])
         print(x+" done...")

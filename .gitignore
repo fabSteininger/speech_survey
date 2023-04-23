@@ -123,6 +123,12 @@ venv.bak/
 # TUDA
 TUDA-testdateien/
 
+# RIO
+RIO/
+
+# HCC
+HCC/
+
 # Spyder project settings
 .spyderproject
 .spyproject

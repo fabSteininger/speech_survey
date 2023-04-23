@@ -4,7 +4,7 @@ import os
 import keys
 import sounddevice #mute the warnings of alsa in pyaudio
 
-srImplemented=["sphinx", "coqui", "google", "microsoft", "ibm", "vosk", "wit"]
+srImplemented=["sphinx", "google", "microsoft", "ibm", "vosk", "wit", "amazon", "whisper"]
 
 r = sr.Recognizer()
 
@@ -47,17 +47,6 @@ def sphinx(audio):
         print("Sphinx could not understand audio")
     except sr.RequestError as e:
         print("Sphinx error; {0}".format(e))
-    return recogniced
-
-def coqui(audio):
-    recogniced=""
-    try:
-        recogniced=r.recognize_coqui(audio, language="de-DE",model_base_dir=os.path.join("coqui-data"))
-        print("coqui")
-    except sr.UnknownValueError:
-        print("Coqui could not understand audio")
-    except sr.RequestError as e:
-        print("Coqui error; {0}".format(e))
     return recogniced
 
 def google(audio):
@@ -117,5 +106,24 @@ def microsoft(audio):
         print("Could not request results from Microsoft Azure Speech service; {0}".format(e))
     return recogniced
 
+def whisper(audio):
+    recogniced=""
+    try:
+        recogniced=r.recognize_whisper(audio,model="small", language="german")
+        print("whisper")
+    except sr.UnknownValueError:
+        print("Whisper could not understand audio")
+    except sr.RequestError as e:
+        print("Could not request results from Whisper service; {0}".format(e))
+    return recogniced
 
-
+def amazon(audio):
+    recogniced=""
+    try:
+        recogniced=r.recognize_amazon(audio,region="eu-west-1")
+        print("Amazon")
+    except sr.UnknownValueError:
+        print("Amazon could not understand audio")
+    except sr.RequestError as e:
+        print("Could not request results from Amazon service; {0}".format(e))
+    return recogniced  

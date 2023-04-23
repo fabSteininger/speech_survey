@@ -19,8 +19,6 @@ def useSR(speechRecognition, audio):
     print(speechRecognition)
     if speechRecognition=="sphinx":
         recogniced=sphinx(audio)
-    elif speechRecognition=="coqui":
-        recogniced=coqui(audio)
     elif speechRecognition=="google":
         recogniced=google(audio)
     elif speechRecognition=="microsoft":
@@ -31,6 +29,10 @@ def useSR(speechRecognition, audio):
         recogniced=vosk(audio)
     elif speechRecognition=="wit":
         recogniced=wit(audio)
+    elif speechRecognition=="amazon":
+        recogniced=amazon(audio)
+    elif speechRecognition=="whisper":
+        recogniced=whisper(audio)
     return recogniced
 
 # listen to microphone, if the user is not happy with the input repeat listening
@@ -38,7 +40,7 @@ def listen(speechEngine, sentence):
     input='Mir ist ein Fehler passiert, bitte wiederholen'
     while input == 'Mir ist ein Fehler passiert, bitte wiederholen':
         webout.put_markdown("# "+sentence)
-        audio=listenAudio(microphoneIndex=3)
+        audio=listenAudio(microphoneIndex=2)
         recogniced=useSR(speechEngine,audio)
         webout.put_markdown("# "+recogniced)
         input=webin.radio("Wie gut findest du die Ausgabe der Spracherkennung: ", options=['Sehr gut', 'Gut', 'Mittelmäßig', 'Schlecht', 'Grausam','Mir ist ein Fehler passiert, bitte wiederholen'])
