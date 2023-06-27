@@ -2,40 +2,69 @@ import speech_recognition as sr
 import jiwer
 import os
 import keys
-import sounddevice #mute the warnings of alsa in pyaudio
+import sounddevice #Stummschalten der Warnungen von alsa in pyaudio
+from text_to_num import alpha2digit
+import subprocess
 
 srImplemented=["sphinx", "google", "microsoft", "ibm", "vosk", "wit", "amazon", "whisper"]
 
 r = sr.Recognizer()
+m = sr.Microphone()
 
 def readAudio(Path):
     with sr.AudioFile(Path) as source:
-        audio = r.record(source)  # read the entire audio file  
+        audio = r.record(source)  
     return audio 
 
-def listenAudio(microphoneIndex=2):
-    with sr.Microphone(microphoneIndex) as source:
+def listenAudio():
+    with m as source:
         r.adjust_for_ambient_noise(source)  
-        print("Say something!")
-        audio = r.listen(source)
-    return audio
+    stop_listening = r.listen_in_background(m, writer)
+    # Layout Deutsch
+    subprocess.run(["setxkbmap", "de"])
+    return stop_listening
+
+def stoplistenAudio(stop_listening):
+    stop_listening(wait_for_stop=True)
+
+def writer(recognizer,audio):
+    recognized= google(audio)+" "
+    if recognized !=" ":
+        print(recognized)
+        subprocess.run(["xdotool", "type", recognized])
+  
+def del_umlaute(text: str) -> str:
+    """ Umlaute umwandeln 
+    ä -> ae, Ä -> Ae...
+    ü -> ue, Ü -> Ue...
+    ö -> oe, Ö -> Oe...
+    ß -> ss
+    """
+    vowel_char_map = {
+        ord('ä'): 'ae', ord('ü'): 'ue', ord('ö'): 'oe', ord('ß'): 'ss',
+        ord('Ä'): 'Ae', ord('Ü'): 'Ue', ord('Ö'): 'Oe'
+    }
+    return text.translate(vowel_char_map)
 
 def evaluation(ground_truth: str, hypothesis: str):
-    # to lower and remove punctuation the rest is by default for calculating WER efficient
+    truthReduced=del_umlaute(alpha2digit(ground_truth, "de"))
+    hypothesisReduced=del_umlaute(alpha2digit(hypothesis,"de"))
+    # Satzzeichen entfernen und alles Kleinschreiben
     transformation = jiwer.Compose(
         [
             jiwer.ToLowerCase(), 
             jiwer.RemovePunctuation(),
-            # jiwer default to get into the right format for calculating
+            # jiwer Standard
             jiwer.RemoveMultipleSpaces(),
             jiwer.Strip(),
             jiwer.ReduceToListOfListOfWords()
         ]
     )
-    # use the jiwer compose method to make the same transformations than jiwer
-    truthReduced=' '.join(jiwer.Compose.__call__(transformation,text=ground_truth)[0])
-    hypothesisReduced=' '.join(jiwer.Compose.__call__(transformation,text=hypothesis)[0])
-    wer = jiwer.wer(ground_truth, hypothesis,truth_transform=transformation, hypothesis_transform=transformation)
+    
+    truthReduced=' '.join(jiwer.Compose.__call__(transformation,text=truthReduced)[0])
+    hypothesisReduced=' '.join(jiwer.Compose.__call__(transformation,text=hypothesisReduced)[0])
+
+    wer = jiwer.wer(truthReduced, hypothesisReduced)
     return wer, ground_truth, truthReduced, hypothesis, hypothesisReduced
 
 def sphinx(audio):
@@ -74,7 +103,7 @@ def wit(audio):
 def ibm(audio):
     recogniced=""
     try:
-        recogniced=r.recognize_ibm(audio, key=keys.IBM_KEY,instance=keys.IBM_Instance, model="de-DE_NarrowbandModel")[0]
+        recogniced=r.recognize_ibm(audio, key=keys.IBM_KEY,instance=keys.IBM_Instance, model="de-DE_Multimedia")[0]
         print("ibm")
     except sr.UnknownValueError:
         print("IBM Speech to Text could not understand audio")
@@ -95,8 +124,6 @@ def vosk(audio):
 
 def microsoft(audio):
     recogniced=""
-# recognize speech using Microsoft Azure Speech
-     # Microsoft Speech API keys 32-character lowercase hexadecimal strings
     try:
         recogniced=r.recognize_azure(audio, key=keys.AZURE_SPEECH_KEY,language="de-AT", location="westeurope")[0]
         print("microsoft")
@@ -120,7 +147,7 @@ def whisper(audio):
 def amazon(audio):
     recogniced=""
     try:
-        recogniced=r.recognize_amazon(audio,region="eu-west-1")
+        recogniced=r.recognize_amazon(audio,bucket_name="speechfabi")
         print("Amazon")
     except sr.UnknownValueError:
         print("Amazon could not understand audio")

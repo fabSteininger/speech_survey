@@ -146,3 +146,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Test files
+z_tests/
+
+#screenshort
+screenshots/
