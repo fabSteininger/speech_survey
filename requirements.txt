@@ -2,7 +2,6 @@ boto3==1.26.161
 botocore==1.29.161
 certifi==2023.5.7
 cffi==1.15.1
-charset-normalizer==3.1.0
 click==8.1.3
 cmake==3.26.4
 filelock==3.12.2
@@ -17,7 +16,6 @@ more-itertools==9.1.0
 mpmath==1.3.0
 networkx==3.1
 numba==0.57.1
-numpy==1.24.4
 nvidia-cublas-cu11==11.10.3.66
 nvidia-cuda-cupti-cu11==11.7.101
 nvidia-cuda-nvrtc-cu11==11.7.99
@@ -34,7 +32,7 @@ pycparser==2.21
 python-dateutil==2.8.2
 rapidfuzz==2.13.7
 regex==2023.6.3
-requests==2.31.0
+requests==2.27.1
 s3transfer==0.6.1
 six==1.16.0
 SpeechRecognition @ git+https://github.com/fabSteininger/speech_recognition.git@74128d24a7a8fc9a862cd82684191fb7af1451fc
@@ -48,3 +46,9 @@ typing_extensions==4.6.3
 urllib3==1.26.16
 vosk==0.3.45
 websockets==11.0.3
+PyAudio==0.2.13
+sounddevice==0.4.6
+text2num==2.5.0
+pynput==1.7.6 
+notify-py==0.3.42
+ffmpeg-python==0.2.0

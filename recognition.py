@@ -9,7 +9,7 @@ import subprocess
 srImplemented=["sphinx", "google", "microsoft", "ibm", "vosk", "wit", "amazon", "whisper"]
 
 r = sr.Recognizer()
-m = sr.Microphone()
+
 
 def readAudio(Path):
     with sr.AudioFile(Path) as source:
@@ -17,6 +17,7 @@ def readAudio(Path):
     return audio 
 
 def listenAudio():
+    m = sr.Microphone()
     with m as source:
         r.adjust_for_ambient_noise(source)  
     stop_listening = r.listen_in_background(m, writer)
@@ -66,17 +67,6 @@ def evaluation(ground_truth: str, hypothesis: str):
 
     wer = jiwer.wer(truthReduced, hypothesisReduced)
     return wer, ground_truth, truthReduced, hypothesis, hypothesisReduced
-
-def sphinx(audio):
-    recogniced=""
-    try:
-        recogniced = r.recognize_sphinx(audio, language="de-DE")
-        print("sphinx")
-    except sr.UnknownValueError:
-        print("Sphinx could not understand audio")
-    except sr.RequestError as e:
-        print("Sphinx error; {0}".format(e))
-    return recogniced
 
 def google(audio):
     recogniced=""
@@ -136,7 +126,7 @@ def microsoft(audio):
 def whisper(audio):
     recogniced=""
     try:
-        recogniced=r.recognize_whisper(audio,model="small", language="german")
+        recogniced=r.recognize_whisper(audio,model="large-v2", language="german")
         print("whisper")
     except sr.UnknownValueError:
         print("Whisper could not understand audio")
