@@ -6,7 +6,7 @@ import traceback
 import time
 
 # Pfadangabe Datensatz
-datasetPath = os.path.join('/home', 'path', 'Sprachdateien', 'test')
+datasetPath = os.path.join('/home', 'fabian', 'Sprachdateien', 'test')
 speechFilesFolder = os.path.join(datasetPath, 'audio')
 textFilesFolder = os.path.join(datasetPath, 'text')
 resultsFolder = os.path.join(datasetPath, 'result')
@@ -27,7 +27,7 @@ def readText(path):
 
 # Alle Audiodateien mit der definierten Dateiendung in einer Liste speichern
 speechFiles = [f for f in os.listdir(speechFilesFolder) if f.endswith(audioExtension)]
-vosk(readAudio("test.flac"))
+google(readAudio("test.flac"))
 # Für alle diese Dateien die Spracherkennung ausführen
 for x in speechFiles:
     try:
@@ -44,7 +44,7 @@ for x in speechFiles:
 
     if text_read is not None:
         start_time = time.time()
-        speechRecognition = vosk(audio_read)
+        speechRecognition = google(audio_read)
         end_time = time.time()
 
         wer, ground_truth, truth_reduced, hypothesis, hypothesis_reduced = evaluation(text_read, speechRecognition)
