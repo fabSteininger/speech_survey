@@ -48,13 +48,20 @@ def del_umlaute(text: str) -> str:
     return text.translate(vowel_char_map)
 
 def evaluation(ground_truth: str, hypothesis: str):
-    truthReduced=del_umlaute(alpha2digit(ground_truth, "de"))
-    hypothesisReduced=del_umlaute(alpha2digit(hypothesis,"de"))
     # Satzzeichen entfernen und alles Kleinschreiben
+    truthReduced=del_umlaute(ground_truth)
+    hypothesisReduced=del_umlaute(hypothesis)
+    try:
+        truthReduced=alpha2digit(truthReduced,"de",ordinal_threshold=0)
+        hypothesisReduced=alpha2digit(hypothesisReduced,"de",ordinal_threshold=0)
+    except:
+        print("alpha2digit has some error")
+
     transformation = jiwer.Compose(
         [
             jiwer.ToLowerCase(), 
             jiwer.RemovePunctuation(),
+            jiwer.RemoveKaldiNonWords(),
             # jiwer Standard
             jiwer.RemoveMultipleSpaces(),
             jiwer.Strip(),
