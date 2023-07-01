@@ -86,6 +86,17 @@ def google(audio):
         print("Could not request results from Google Speech Recognition service; {0}".format(e))   
     return recogniced
 
+def google_cloud(audio):
+    recogniced=""
+    try:
+        recogniced=r.recognize_google_cloud(audio, credentials_json="credentials_google.json",language="de-DE")
+        print("google")
+    except sr.UnknownValueError:
+        print("Google Cloud Speech API could not understand audio")
+    except sr.RequestError as e:
+        print("Could not request results from Google Cloud Speech API service; {0}".format(e))   
+    return recogniced
+
 def wit(audio):
     recogniced=""
     try:

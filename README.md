@@ -23,7 +23,13 @@ IBM_KEY = "YOUR_KEY"
 IBM_Instance = "YOUR_KEY"
 AZURE_SPEECH_KEY = "YOUR_KEY
 ```
+For the Google Cloud Speech-to-Text Service also credentials are needed - create the json credentals under IAM & Admin / Service Accounts
+Place them in the folder of the user_survey.py and wer_test.py with the file name "credentials_google.json"
 
+For the usage of AWS authenticate with: 
+```
+aws configure
+```
 ### user_survey.py
 select used speech recognition, in this case it is vosk, because it is an offline speech recognition download a model first and place it in a new folder "model" (default setting)  
 ```python

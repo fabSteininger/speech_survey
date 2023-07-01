@@ -80,6 +80,7 @@ coqui-data
 
 # API-Keys
 keys.py
+credentials_google.json
 
 # PyBuilder
 target/
