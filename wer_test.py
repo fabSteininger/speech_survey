@@ -27,7 +27,6 @@ def readText(path):
 
 # Alle Audiodateien mit der definierten Dateiendung in einer Liste speichern
 speechFiles = [f for f in os.listdir(speechFilesFolder) if f.endswith(audioExtension)]
-google(readAudio("test.flac"))
 # Für alle diese Dateien die Spracherkennung ausführen
 for x in speechFiles:
     try:
@@ -44,7 +43,7 @@ for x in speechFiles:
 
     if text_read is not None:
         start_time = time.time()
-        speechRecognition = google(audio_read)
+        speechRecognition = whisper_api(audio_read)
         end_time = time.time()
 
         wer, ground_truth, truth_reduced, hypothesis, hypothesis_reduced = evaluation(text_read, speechRecognition)
@@ -56,7 +55,7 @@ for x in speechFiles:
 
 # Ergebnisse in eine CSV-Datei schreiben
 result_file = str(date.today())
-result_file = os.path.join(resultsFolder, result_file+"_vosk-model-de-tuda-0.6-900k" + ".csv")
+result_file = os.path.join(resultsFolder, result_file+"_whisper" + ".csv")
 
 with open(result_file, 'w', encoding="UTF-8", newline='') as file:
     writer = csv.writer(file, delimiter=';')

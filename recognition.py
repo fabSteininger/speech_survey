@@ -152,6 +152,18 @@ def whisper(audio):
         print("Could not request results from Whisper service; {0}".format(e))
     return recogniced
 
+def whisper_api(audio):
+    recogniced=""
+    try:
+        recogniced=r.recognize_whisper_api(audio,key=keys.OPEN_AI)
+        print(recogniced)
+        print("whisper")
+    except sr.UnknownValueError:
+        print("Whisper could not understand audio")
+    except sr.RequestError as e:
+        print("Could not request results from Whisper service; {0}".format(e))
+    return recogniced   
+
 def amazon(audio):
     recogniced=""
     try:
