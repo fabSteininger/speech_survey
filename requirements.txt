@@ -53,3 +53,5 @@ pynput==1.7.6
 notify-py==0.3.42
 ffmpeg-python==0.2.0
 openai==0.27.8 
+google-cloud-speech==2.20.0
+awscli==1.27.165
