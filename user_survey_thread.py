@@ -2,7 +2,8 @@ from threading import Thread
 from queue import Queue
 import subprocess
 import speech_recognition as sr
-from recognition import google
+from recognition import wit
+import time
 
 r = sr.Recognizer()
 audio_queue = Queue()
@@ -10,29 +11,27 @@ audio_queue = Queue()
 def recognize_worker():
     # läuft in einem Hintergrund-Thread
     while True:
-        audio = audio_queue.get()  # retrieve the next audio processing job from the main thread
-        if audio is None: break  # stop processing if the main thread is done
-        try:
-            recognized=google(audio)
-            if recognized == "" or recognized.isspace():
-                pass  # Do nothing
-            else:
-                subprocess.run(["xdotool", "type", recognized+' '])
-                print("Google Speech Recognition thinks you said:" + recognized)
-        except sr.UnknownValueError:
-            print("Google Speech Recognition could not understand audio")
-        except sr.RequestError as e:
-            print("Could not request results from Google Speech Recognition service; {0}".format(e))
+        audio = audio_queue.get()  
+        if audio is None: break  
+        recognized=wit(audio)
+        if recognized == "" or recognized.isspace():
+            pass  # Falls "" oder " " als Ergebnis der Spracherkennung retour kommt sollte nichts passieren
+        else:
+            subprocess.run(["xdotool", "type", recognized+' ']) # Ansonsten erkannter Text + Leerzeichen 
+            print("Output:" + recognized)
 
-        audio_queue.task_done()  # mark the audio processing job as completed in the queue
+        audio_queue.task_done()
 
 
 # Einen neuen Thread um die Spracherkennung auszuführen. Das Hauptprogramm verarbeitet währenddessen die eingehenden Mikrofondaten
+
 recognize_thread = Thread(target=recognize_worker)
 recognize_thread.daemon = True
 recognize_thread.start()
-subprocess.run(["setxkbmap", "de"])
+subprocess.run(["setxkbmap", "de"]) #Sichergehen ob richtiges Tastaturlayout eingestellt ist
 
-with sr.Microphone() as source:
+with sr.Microphone(sample_rate=16000) as source:
+    r.adjust_for_ambient_noise(source)  # Für Umgebungsgeräusche kalibiereren
     while True:  # Entstehende Daten dem Thread der Spracherkennung hinzufügen
         audio_queue.put(r.listen(source))
+        
