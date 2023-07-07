@@ -1,32 +1,37 @@
+import subprocess
 from pynput import keyboard
-#für Windows evtl.
-#from pywinauto import keyboard as win_keyboard
-from recognition import *
 from notifypy import Notify
 notification = Notify()
 
+program_process = None  # Global variable to store the program process
 shortcut = False
-stop =None
+
+def start_program():
+    print("started")
+    global program_process
+    program_process = subprocess.Popen(['python', 'user_survey_thread.py'])  # Replace with the actual name of your Python program file
+
+def stop_program():
+    global program_process
+    if program_process:
+        program_process.terminate()
 
 def on_activate():
     global shortcut 
-    global stop
     if not shortcut:
         notification.title = "Spracherkennung gestartet"
         notification.message = "Es wird zugehört"
         notification.icon = "start.png"
         notification.send()
-        stop = listenAudio()
+        start_program()
         shortcut = True
-
     else:
         notification.title = "Spracherkennung gestoppt"
         notification.message = "Es wird nicht mehr zugehört"
         notification.icon = "stop.png"
         notification.send()
         shortcut = False
-        stoplistenAudio(stop)
-        stop=None
+        stop_program()
 
 start_key = keyboard.HotKey(
     keyboard.HotKey.parse('<ctrl>+<alt>+l'),

@@ -51,5 +51,8 @@ pynput==1.7.6
 notify-py==0.3.42
 ffmpeg-python==0.2.0
 openai==0.27.8 
-google-cloud-speech==2.20.0
+natsort==8.4.0
+pydub==0.25.1
+boto3
 awscli==1.27.165
+google-cloud-speech==2.20.0
