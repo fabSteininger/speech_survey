@@ -2,7 +2,7 @@ from threading import Thread
 from queue import Queue
 import subprocess
 import speech_recognition as sr
-from recognition import wit
+from recognition import whisper_api
 import time
 
 r = sr.Recognizer()
@@ -13,9 +13,13 @@ def recognize_worker():
     while True:
         audio = audio_queue.get()  
         if audio is None: break  
-        recognized=wit(audio)
+        recognized=whisper_api(audio)
+        # Irgendwie Halluziniert die API etwas mit Untertitel der Amara.org-Community deshalb wird dieser Satz rausgefiltert
         if recognized == "" or recognized.isspace():
             pass  # Falls "" oder " " als Ergebnis der Spracherkennung retour kommt sollte nichts passieren
+        elif "Untertitel der" in recognized:
+        # Ignore cases where "Untertitel der" is present in the recognized text
+            pass
         else:
             subprocess.run(["xdotool", "type", recognized+' ']) # Ansonsten erkannter Text + Leerzeichen 
             print("Output:" + recognized)
