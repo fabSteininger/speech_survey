@@ -1,10 +1,9 @@
 # Installation
 Tested with python 3.10.11  
 
-Following packages are needed on Ubuntu 23.10 and additionally a programm that uses xwayland like the browsers firefox (tested on version 114) and chrome (tested on version 114)
+Following packages are needed on Ubuntu 23.10 and additionally a programm that uses xwayland like the browsers firefox (tested on version 115) and chrome (tested on version 114)
 ```unix
 sudo apt install portaudio19-dev
-sudo apt install xdotool
 ```
 It is recommended to use a virtual environment  
 ```python

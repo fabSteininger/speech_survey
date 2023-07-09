@@ -4,9 +4,11 @@ import subprocess
 import speech_recognition as sr
 from recognition import whisper_api
 import time
+from pynput.keyboard import Key, Controller
 
 r = sr.Recognizer()
 audio_queue = Queue()
+keyboard = Controller()
 
 def recognize_worker():
     # läuft in einem Hintergrund-Thread
@@ -14,14 +16,16 @@ def recognize_worker():
         audio = audio_queue.get()  
         if audio is None: break  
         recognized=whisper_api(audio)
-        # Irgendwie Halluziniert die API etwas mit Untertitel der Amara.org-Community deshalb wird dieser Satz rausgefiltert
         if recognized == "" or recognized.isspace():
             pass  # Falls "" oder " " als Ergebnis der Spracherkennung retour kommt sollte nichts passieren
-        elif "Untertitel der" in recognized:
-        # Ignore cases where "Untertitel der" is present in the recognized text
+        elif "Untertitel" in recognized:
+        # Irgendwie Halluziniert die API etwas mit Untertitel der Amara.org-Community deshalb wird dieser Satz rausgefiltert
+            pass
+        elif "Vielen Dank für" in recognized:
+        # Halluzination der API in allen Sprachen Vielen Dank fürs zusehen
             pass
         else:
-            subprocess.run(["xdotool", "type", recognized+' ']) # Ansonsten erkannter Text + Leerzeichen 
+            keyboard.type(recognized+' ')
             print("Output:" + recognized)
 
         audio_queue.task_done()
