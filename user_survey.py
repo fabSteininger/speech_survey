@@ -38,7 +38,7 @@ start_key = keyboard.HotKey(
     on_activate)
 
 with keyboard.Listener(
-        on_press=start_key.press,
-        on_release=start_key.release
-) as l:
-    l.join() #siehe https://pynput.readthedocs.io/en/latest/keyboard.html
+    on_press=start_key.press,
+    on_release=start_key.release
+) as listener:
+    listener.join()

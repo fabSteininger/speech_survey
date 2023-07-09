@@ -36,7 +36,6 @@ def recognize_worker():
 recognize_thread = Thread(target=recognize_worker)
 recognize_thread.daemon = True
 recognize_thread.start()
-subprocess.run(["setxkbmap", "de"]) #Sichergehen ob richtiges Tastaturlayout eingestellt ist
 
 with sr.Microphone(sample_rate=16000) as source:
     r.adjust_for_ambient_noise(source)  # Für Umgebungsgeräusche kalibiereren
