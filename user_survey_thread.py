@@ -1,9 +1,7 @@
 from threading import Thread
 from queue import Queue
-import subprocess
 import speech_recognition as sr
 from recognition import whisper_api
-import time
 from pynput.keyboard import Key, Controller
 
 r = sr.Recognizer()
