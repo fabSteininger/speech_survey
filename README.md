@@ -50,7 +50,7 @@ resultsFolder = os.path.join(datasetPath, 'result')
 ```
 
 ### Results
-The results of the wer_test of the following dataset, can be found in the result folder  
+The results of the wer_test of the following dataset, can be found in the [results](https://github.com/fabSteininger/speech_survey/tree/main/results) folder  
 [TUDA v4.0](https://ltdata1.informatik.uni-hamburg.de/kaldi_tuda_de/german-speechdata-package-v4.tar.gz)  
 [Common Voice v13.0](https://commonvoice.mozilla.org/de/datasets)  
 [mtedx_de](https://www.openslr.org/resources/100/mtedx_de.tgz)  
