@@ -19,6 +19,9 @@ def recognize_worker():
         elif "Untertitel" in recognized:
         # Irgendwie Halluziniert die API etwas mit Untertitel der Amara.org-Community deshalb wird dieser Satz rausgefiltert
             pass
+        elif "Tschüss" in recognized:
+        # Irgendwie Halluziniert die API etwas mit Untertitel der Amara.org-Community deshalb wird dieser Satz rausgefiltert
+            pass
         elif "Vielen Dank für" in recognized:
         # Halluzination der API in allen Sprachen Vielen Dank fürs zusehen
             pass

@@ -48,3 +48,14 @@ speechFilesFolder = os.path.join(datasetPath, 'audio')
 textFilesFolder = os.path.join(datasetPath, 'text')
 resultsFolder = os.path.join(datasetPath, 'result')
 ```
+
+### Results
+The results of the wer_test of the following dataset, can be found in the result folder  
+[TUDA v4.0](https://ltdata1.informatik.uni-hamburg.de/kaldi_tuda_de/german-speechdata-package-v4.tar.gz)  
+[Common Voice v13.0](https://commonvoice.mozilla.org/de/datasets)  
+[mtedx_de](https://www.openslr.org/resources/100/mtedx_de.tgz)  
+
+The csv file has the delimiter ';' and the following header
+```
+filename;wer;ground_truth;truthReduced;hypothesis;hypothesisReduced;time;audio_length
+```
